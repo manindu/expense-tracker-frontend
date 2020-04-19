@@ -41,9 +41,11 @@ const Home = () => {
     handleChange,
     handleSubmit,
     setFieldValue,
+    isValid,
+    isSubmitting,
   } = useFormik({
     initialValues: {
-      type: "Income",
+      type: "Expense",
       note: "",
       amount: 0,
     },
@@ -75,9 +77,9 @@ const Home = () => {
                 <option value="Income">Income</option>
                 <option value="Expense">Expense</option>
               </Select>
-              <FormErrorMessage>"some error"</FormErrorMessage>
+              <FormErrorMessage>{errors.type}</FormErrorMessage>
             </FormControl>
-            <FormControl isRequired mb="10px">
+            <FormControl isRequired mb="10px" isInvalid={errors.note}>
               <FormLabel htmlFor="note">Note</FormLabel>
               <Input
                 id="note"
@@ -85,7 +87,7 @@ const Home = () => {
                 onChange={handleChange}
                 value={values.note}
               />
-              <FormErrorMessage>"some error"</FormErrorMessage>
+              <FormErrorMessage>{errors.note}</FormErrorMessage>
             </FormControl>
             <FormControl isRequired mb="10px">
               <FormLabel htmlFor="amount">Amount</FormLabel>
@@ -102,7 +104,7 @@ const Home = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-              <FormErrorMessage>"some error"</FormErrorMessage>
+              <FormErrorMessage>{errors.amount}</FormErrorMessage>
             </FormControl>
           </ModalBody>
 
@@ -110,7 +112,11 @@ const Home = () => {
             <Button mr={3} onClick={toggleTransactionModal}>
               Close
             </Button>
-            <Button variantColor="green" onClick={handleSubmit}>
+            <Button
+              variantColor="green"
+              onClick={handleSubmit}
+              isDisabled={!isValid | isSubmitting}
+            >
               Add
             </Button>
           </ModalFooter>
